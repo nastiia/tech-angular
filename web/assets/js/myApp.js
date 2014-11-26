@@ -14,7 +14,7 @@
         'img2'
     ]);
 
-    module.controller('myAppGlobalCtrl', ['$scope', '$state', '', function ($scope, $state, UtilsFactory) {
+    module.controller('myAppGlobalCtrl', ['$scope', '$state', 'UtilsFactory', function ($scope, $state, UtilsFactory) {
         console.log('STARTED');
         $scope.$state = $state;
         //if(!UtilsFactory.getLogged()) {
@@ -80,7 +80,7 @@
         };
     }]);
 
-    var UtilsService = function(){
+    var UtilsService = function($state){
         this.xxx = 1;
         this.foo = function(){
             console.log('hello');
@@ -88,7 +88,7 @@
     };
 
     // new Foo();
-    module.service('UtilsService', [UtilsService]);
+    module.service('UtilsService', ['$state', UtilsService]);
 
     // 'Utils' - result from $get method
     module.provider('Utils', [function(){
