@@ -8,44 +8,104 @@
         'ngSanitize',
 
         'ui.router',
-        'ui.select'
+        'ui.select',
+
+        'img1',
+        'img2'
     ]);
 
-    module.controller('myAppGlobalCtrl', ['$scope', '$state', function ($scope, $state) {
+    module.controller('myAppGlobalCtrl', ['$scope', '$state', '', function ($scope, $state, UtilsFactory) {
         console.log('STARTED');
-        $scope.test = 'TEST';
         $scope.$state = $state;
+        //if(!UtilsFactory.getLogged()) {
+        //    $state.go('root');
+        //}
+        UtilsFactory.setLogged();
     }]);
 
-    module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/');
+    module.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/img1');
 
-        $stateProvider.state('root', {
-            url: '/',
+        $stateProvider.state('img1', {
+            url: "/img1?comment",
             views: {
                 'content': {
-                    //controller: 'pcViewsEfPochRedController',
-                    templateUrl: 'assets/js/views/root.tpl.html'
-                    //template: 'test-template'
+                    controller: 'img1Ctrl',
+                    //template: '<h1>qwe</h1>',
+                    templateUrl: 'assets/js/views/img1.tpl.html'
                 }
             },
             data: {
-                title: 'Это проперти'
+                title: 'Пикассо'
             }
         });
 
-        $stateProvider.state('x1', {
-            url: '/x1',
+        $stateProvider.state('img2', {
+            url: "/img2/{ISDN}/",
             views: {
-                content: {
-                    //controller: 'pcViewsEfPochRedController',
-                    //templateUrl: '',
-                    template: 'test-template x1'
+                'content': {
+                    controller: 'img2Ctrl',
+                    //template: '<h1>qwe</h1>',
+                    templateUrl: 'assets/js/views/img2.tpl.html'
                 }
             },
             data: {
-                title: 'Это проперти x1'
+                title: 'Ван ГОГ'
             }
         });
-    }])
+    }]);
+
+    module.constant('CONSTANTA', 'http://amazon.com/');
+
+    module.value('VALUE123', {
+        subvalue1: 1,
+        subvalue2: 2
+    });
+
+    //module.controller('CTRL',...);
+
+    module.factory('UtilsFactory', ['$state', 'VALUE123', function($state, VALUE123){
+        var local=$state;
+        var logged = false;
+        return {
+            foo: function(a , b) {
+                return a+b;
+            },
+            setLogged: function(){
+                logged = true;
+            },
+            getLogged: function(){
+                return logged;
+            }
+        };
+    }]);
+
+    var UtilsService = function(){
+        this.xxx = 1;
+        this.foo = function(){
+            console.log('hello');
+        }
+    };
+
+    // new Foo();
+    module.service('UtilsService', [UtilsService]);
+
+    // 'Utils' - result from $get method
+    module.provider('Utils', [function(){
+        return {
+            // 'UtilsProvider' - только на этапе module.config
+            configValue1: 'defaults',
+            //....
+            $get: function(){
+                var xx = this.configValue1;
+
+                // 'Utils' - в контроллеры, в factory, в сервисы
+                return {
+                    foo: function() {
+                        return xx;
+                    }
+                };
+            }
+        }
+    }]);
 })();

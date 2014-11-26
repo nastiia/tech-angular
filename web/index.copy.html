@@ -25,38 +25,28 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.9.0/select.js"></script>
 
     <script src="./assets/js/myApp.js"></script>
-    <script src="./assets/js/views/img1.js"></script>
-    <script src="./assets/js/views/img2.js"></script>
-    <style>
-        .activex {
-            color: blue;
-            font-weight: bold;
-            background-color: aqua;
-        }
-    </style>
 </head>
-
 <body>
-    <div>HEADER</div>
     <h1>{{$state.current.data.title}}</h1>
+    <form role="form">
+        <div class="form-group">
+            <label for="test">Test string</label>
+            <input type="text" class="form-control" id="test" placeholder="Enter test string" ng-model="test">
+        </div>
+        <button type="button" class="btn btn-default" ng-click="test=333">update</button>
+    </form>
+    <pre>
+        {{test}}
+    </pre>
 
     <hr/>
-    <a href="#/img1">img1</a>
-    <a href="#/img2">img2</a>
-
+    <div ui-view="content">No content</div>
     <hr/>
-    <a href ui-sref-active="activex" ui-sref="img1({ comment: $state.current.data.title })">img1 sref</a>
-    <div ui-sref-active="activex">
-        <a href ui-sref="img2({ ISDN: '1234567890' })">img2 sref</a>
-    </div>
-
+    <a href ui-sref="root">go root view (via ui-sref)</a>
+    <a href="#/">go root view (via href)</a>
     <hr/>
-    <a href ng-click="$state.go('img1', { param2: 123 })">img1 $state.go</a>
-    <a href ng-click="$state.go('img2', { ISDN: '1234567890' })">img2 $state.go</a>
-
+    <a href ui-sref="x1">go next view (via ui-sref)</a>
+    <a href="#/x1">go next view (via href)</a>
     <hr/>
-    <div ui-view="content"></div>
-    <div>FOOTER</div>
 </body>
-
 </html>
